@@ -14,5 +14,6 @@ namespace PigeonsTP2
         public static int elementSize = 15;
 
         public static int environmentActionDelay = 2000;
+        public static int pigeonActionDelay = 4000;
     }
 }

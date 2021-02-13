@@ -29,30 +29,16 @@ namespace PigeonsTP2
             Engine.Start();
         }
 
-        private void presentation_OnEnvironmentChange(List<Place> places)
+        private void presentation_OnEnvironmentChange(Place place)
         {
             Invoke(new Action(() =>
             {
-                int count = 0;
+                PictureBox picture = (PictureBox)tableLayoutPanel1.Controls.Find("pictureBoxGeneral" + place.index.ToString(), false)[0];
 
-                string place = String.Empty;
+                picture.ImageLocation = String.Empty;
 
-                foreach (var item in places)
-                {
-                    PictureBox picture = (PictureBox)tableLayoutPanel1.Controls.Find("pictureBoxGeneral" + count.ToString(), false)[0];
-
-                    if (item.pigeon != null)
-                    {
-                        picture.ImageLocation = item.pigeon.ImagePath;
-                        picture.Visible = true;
-                    }
-                    else
-                    {
-                        picture.Visible = false;
-                    }
-
-                    count++;
-                }
+                if (place.pigeon != null)
+                    picture.ImageLocation = place.pigeon.ImagePath;
             }));
         }
 
@@ -90,7 +76,7 @@ namespace PigeonsTP2
                 pictureBoxGeneral.Size = new System.Drawing.Size(40, 55);
                 pictureBoxGeneral.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
                 pictureBoxGeneral.Anchor = AnchorStyles.None;
-                pictureBoxGeneral.Visible = false;
+                pictureBoxGeneral.Visible = true;
                 tableLayoutPanel1.Controls.Add(pictureBoxGeneral, e, 0);
                 ((ISupportInitialize)(pictureBoxGeneral)).EndInit();
             }

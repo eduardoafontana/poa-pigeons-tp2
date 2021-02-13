@@ -13,17 +13,32 @@ namespace PigeonsTP2
 
         private Thread thread = null;
 
+        public PigeonActuator actuator { get; set; }
+
+        private Random random = new Random();
+
+        private int index = 0;
+
         public Pigeon()
         {
-            Random random = new Random();
+            index = random.Next(1, 1); //TODO after, alter this second 1 for the number of pigeons images
 
-            int index = random.Next(1, 1);
-
-            //ImagePath = String.Format("Assets\\pigeon{0}_right.png", index);
-            ImagePath = String.Format("Assets\\pigeon1.png", index);
+            GenerateImage();
 
             thread = new Thread(new ThreadStart(Loop));
             thread.Start();
+
+            actuator = new PigeonActuator();
+        }
+
+        private void GenerateImage()
+        {
+            int indexLeftRight = random.Next(0, 100);
+
+            if (indexLeftRight % 2 == 0)
+                ImagePath = String.Format("Assets\\pigeon{0}_left.png", index);
+            else
+                ImagePath = String.Format("Assets\\pigeon{0}_right.png", index);
         }
 
         private void Loop()
@@ -36,9 +51,11 @@ namespace PigeonsTP2
 
         internal void Execute()
         {
-            Thread.Sleep(Config.environmentActionDelay);
+            Thread.Sleep(Config.pigeonActionDelay);
 
-            Debug.WriteLine(DateTime.Now);
+            GenerateImage();
+
+            actuator.TriggerTurnPigeon();
         }
 
         public void Destroy()

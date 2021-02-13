@@ -8,16 +8,16 @@ namespace PigeonsTP2
 {
     public class EnvironmentActuator
     {
-        public delegate void ChangingEnvironmentActuator(List<Place> places);
+        public delegate void ChangingEnvironmentActuator(Place place);
         public event ChangingEnvironmentActuator RaiseChangeEnvironment;
 
         public EnvironmentActuator()
         {
         }
 
-        public void TriggerChangeEnvironment(List<Place> places)
+        public void TriggerChangeEnvironment(Place place)
         {
-            RaiseChangeEnvironment(places);
+            RaiseChangeEnvironment(place);
         }
     }
 }

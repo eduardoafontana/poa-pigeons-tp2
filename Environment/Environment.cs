@@ -12,17 +12,19 @@ namespace PigeonsTP2
         private Random random = new Random();
         private int currentRandomPosition;
 
-        public EnvironmentSensor sensor;
         public EnvironmentActuator actuator = new EnvironmentActuator();
 
         public Environment()
         {
             for (int i = 0; i < Config.environmentSize; i++)
             {
-                places.Add(new Place());
+                places.Add(new Place(this, i));
             }
+        }
 
-            sensor = new EnvironmentSensor(this);
+        internal void Change(Place place)
+        {
+            actuator.TriggerChangeEnvironment(place);
         }
 
         internal void Execute()
@@ -37,9 +39,11 @@ namespace PigeonsTP2
 
         private void GeneratePigeon()
         {
-            places[currentRandomPosition].pigeon = new Pigeon();
+            Place place = places[currentRandomPosition];
+            place.pigeon = new Pigeon();
+            place.sensor.AddPigeonInPlace(place.pigeon);
 
-            actuator.TriggerChangeEnvironment(places);
+            actuator.TriggerChangeEnvironment(place);
         }
 
         private bool ShouldThereBeANewPigeon()

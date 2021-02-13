@@ -10,5 +10,15 @@ namespace PigeonsTP2
     {
         public IElement pigeon { get; set; }
         public IElement food { get; set; }
+
+        public int index { get; set; }
+
+        public PlaceSensor sensor;
+
+        public Place(Environment environment, int index)
+        {
+            this.index = index;
+            sensor = new PlaceSensor(environment, this);
+        }
     }
 }

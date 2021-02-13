@@ -47,7 +47,8 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Environment\Element.cs" />
-    <Compile Include="Environment\EnvironmentSensor.cs" />
+    <Compile Include="Environment\PigeonActuator.cs" />
+    <Compile Include="Environment\PlaceSensor.cs" />
     <Compile Include="Environment\EnvironmentActuator.cs" />
     <Compile Include="Environment\Place.cs" />
     <Compile Include="Environment\Pigeon.cs" />
@@ -88,10 +89,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\pigeon1.png">
+    <Content Include="Assets\pigeon1_left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\pigeon1_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\window.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
