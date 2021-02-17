@@ -20,5 +20,10 @@ namespace PigeonsTP2
             this.index = index;
             sensor = new PlaceSensor(environment, this);
         }
+
+        internal bool isClean()
+        {
+            return pigeon == null && food == null;
+        }
     }
 }

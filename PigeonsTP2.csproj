@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="Environment\PigeonAction.cs" />
     <Compile Include="Environment\Element.cs" />
     <Compile Include="Environment\PigeonActuator.cs" />
     <Compile Include="Environment\PlaceSensor.cs" />

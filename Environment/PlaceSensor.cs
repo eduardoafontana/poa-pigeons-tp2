@@ -19,10 +19,10 @@ namespace PigeonsTP2
 
         internal void AddPigeonInPlace(IElement pigeon)
         {
-            pigeon.actuator.RaiseTurnPigeon += new PigeonActuator.TurningPigeonActuator(placeSensor_OnPigeonTurn);
+            pigeon.actuator.RaiseChangePigeon += new PigeonActuator.ChangingPigeonActuator(placeSensor_OnPigeonChange);
         }
 
-        private void placeSensor_OnPigeonTurn()
+        private void placeSensor_OnPigeonChange()
         {
             environment.Change(place);
         }

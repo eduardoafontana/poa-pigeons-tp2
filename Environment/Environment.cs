@@ -40,7 +40,7 @@ namespace PigeonsTP2
         private void GeneratePigeon()
         {
             Place place = places[currentRandomPosition];
-            place.pigeon = new Pigeon();
+            place.pigeon = new Pigeon(places, currentRandomPosition);
             place.sensor.AddPigeonInPlace(place.pigeon);
 
             actuator.TriggerChangeEnvironment(place);

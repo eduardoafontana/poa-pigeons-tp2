@@ -8,16 +8,16 @@ namespace PigeonsTP2
 {
     public class PigeonActuator
     {
-        public delegate void TurningPigeonActuator();
-        public event TurningPigeonActuator RaiseTurnPigeon;
+        public delegate void ChangingPigeonActuator();
+        public event ChangingPigeonActuator RaiseChangePigeon;
 
         public PigeonActuator()
         {
         }
 
-        public void TriggerTurnPigeon()
+        public void TriggerChangePigeon()
         {
-            RaiseTurnPigeon();
+            RaiseChangePigeon();
         }
     }
 }
