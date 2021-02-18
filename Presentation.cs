@@ -25,22 +25,48 @@ namespace PigeonsTP2
             Engine.Init();
 
             Engine.environment.actuator.RaiseChangeEnvironment += new EnvironmentActuator.ChangingEnvironmentActuator(presentation_OnEnvironmentChange);
+            Engine.environment.actuator.RaiseChangeCat += new EnvironmentActuator.ChangingCatActuator(presentation_OnCatChange);
 
             Engine.Start();
         }
 
         private void presentation_OnEnvironmentChange(Place place)
         {
-            Invoke(new Action(() =>
+            try
             {
-                PictureBox picture = (PictureBox)tableLayoutPanel1.Controls.Find("pictureBoxGeneral" + place.index.ToString(), false)[0];
+                Invoke(new Action(() =>
+                {
+                    if (place == null)
+                        return;
 
-                picture.ImageLocation = String.Empty;
+                    PictureBox picture = (PictureBox)tableLayoutPanel1.Controls.Find("pictureBoxGeneral" + place.index.ToString(), false)[0];
 
-                if (place.pigeon != null)
-                    picture.ImageLocation = place.pigeon.ImagePath;
-            }));
+                    picture.ImageLocation = String.Empty;
+
+                    if (place.pigeon != null)
+                        picture.ImageLocation = place.pigeon.ImagePath;
+                }));
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                Engine.Stop();
+            }
         }
+
+        private void presentation_OnCatChange(bool visible)
+        {
+            try
+            {
+                Invoke(new Action(() =>
+                {
+                    pictureBox2.Visible = visible;
+                }));
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                Engine.Stop();
+            }
+}
 
         private void CreateEnvironmentPresentation()
         {
@@ -80,6 +106,8 @@ namespace PigeonsTP2
                 tableLayoutPanel1.Controls.Add(pictureBoxGeneral, e, 0);
                 ((ISupportInitialize)(pictureBoxGeneral)).EndInit();
             }
+
+            pictureBox2.Visible = false;
         }
 
         private void Presentation_FormClosed(object sender, FormClosedEventArgs e)

@@ -17,14 +17,27 @@ namespace PigeonsTP2
             this.place = place;
         }
 
-        internal void AddPigeonInPlace(IElement pigeon)
+        internal void AddPigeonInPlace(Pigeon pigeon)
         {
+            if (pigeon == null)
+                return;
+
             pigeon.actuator.RaiseChangePigeon += new PigeonActuator.ChangingPigeonActuator(placeSensor_OnPigeonChange);
         }
 
         private void placeSensor_OnPigeonChange()
         {
-            environment.Change(place);
+            environment.actuator.TriggerChangeEnvironment(place);
+        }
+
+        internal void AddCatBehavior(Cat cat)
+        {
+            cat.actuator.RaiseShowCat += new CatActuator.ShowingCatActuator(placeSensor_OnCatShow);
+        }
+
+        private void placeSensor_OnCatShow(bool appear)
+        {
+            environment.actuator.TriggerChangeCat(appear);
         }
     }
 }

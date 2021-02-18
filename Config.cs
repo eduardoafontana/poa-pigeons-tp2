@@ -13,10 +13,11 @@ namespace PigeonsTP2
         public static int environmentPlaceSizeHeight = 100;
         public static int elementSize = 15;
 
-        public static int environmentActionDelay = 6000;
+        public static int environmentPigeonDelay = 6000;
+        public static int environmentCatShowingDelay = 5000;
         public static int pigeonActionDelay = 2000;
 
-        public static int pigeonMaxTimesTurn = 2;
-        public static int pigeonMaxTimesWalkAfterTurn = 2;
+        public static int pigeonMaxTimesTurn = 3;
+        public static int pigeonMaxTimesWalk = 5;
     }
 }

@@ -11,6 +11,7 @@ namespace PigeonsTP2
         private List<Place> places = new List<Place>();
         private Random random = new Random();
         private int currentRandomPosition;
+        private Cat cat;
 
         public EnvironmentActuator actuator = new EnvironmentActuator();
 
@@ -20,30 +21,27 @@ namespace PigeonsTP2
             {
                 places.Add(new Place(this, i));
             }
-        }
 
-        internal void Change(Place place)
-        {
-            actuator.TriggerChangeEnvironment(place);
+            cat = new Cat();
         }
 
         internal void Execute()
         {
-            Thread.Sleep(Config.environmentActionDelay);
-
             if (ShouldThereBeANewPigeon())
                 GeneratePigeon();
-
-            //other events triggered by environment
         }
 
         private void GeneratePigeon()
         {
             Place place = places[currentRandomPosition];
             place.pigeon = new Pigeon(places, currentRandomPosition);
+            place.pigeon.sensor.AddCatAffraid(cat);
             place.sensor.AddPigeonInPlace(place.pigeon);
+            place.sensor.AddCatBehavior(cat);
 
             actuator.TriggerChangeEnvironment(place);
+
+            Thread.Sleep(Config.environmentPigeonDelay);
         }
 
         private bool ShouldThereBeANewPigeon()
@@ -65,6 +63,12 @@ namespace PigeonsTP2
                     item.pigeon.Destroy();
                     item.pigeon = null;
                 }
+            }
+        
+            if(cat != null)
+            {
+                cat.Destroy();
+                cat = null;
             }
         }
     }

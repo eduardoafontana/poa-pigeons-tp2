@@ -8,8 +8,8 @@ namespace PigeonsTP2
 {
     public class Place
     {
-        public IElement pigeon { get; set; }
-        public IElement food { get; set; }
+        public Pigeon pigeon { get; set; }
+        //public IElement food { get; set; }
 
         public int index { get; set; }
 
@@ -23,7 +23,8 @@ namespace PigeonsTP2
 
         internal bool isClean()
         {
-            return pigeon == null && food == null;
+            //return pigeon == null && food == null;
+            return pigeon == null;
         }
     }
 }

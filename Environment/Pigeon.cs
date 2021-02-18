@@ -26,7 +26,10 @@ namespace PigeonsTP2
         private int currentPosition;
 
         private int timesTurn = -1;
-        private int timesWalkAfterTurn = 0;
+
+        private int timesWalk = 0;
+
+        public PigeonSensor sensor;
 
         public Pigeon(List<Place> places, int currentPosition)
         {
@@ -35,6 +38,7 @@ namespace PigeonsTP2
             ChoseDirection();
 
             actuator = new PigeonActuator();
+            sensor = new PigeonSensor(this);
 
             this.places = places;
             this.currentPosition = currentPosition;
@@ -115,6 +119,12 @@ namespace PigeonsTP2
                 case PigeonAction.WalkingRight:
                     timeToSleep = VerifyIfItIsTimeToSleep();
 
+                    if (timeToSleep)
+                    {
+                        SetSleep();
+                        break;
+                    }
+
                     newPosition = currentPosition + 1;
 
                     if (newPosition == places.Count)
@@ -145,14 +155,21 @@ namespace PigeonsTP2
             pigeonAction = PigeonAction.Sleeping;
 
             timesTurn = 0;
-            timesWalkAfterTurn = 0;
+            timesWalk = 0;
+
+            actuator.TriggerChangePigeon();
+        }
+
+        private void SetWakeUp()
+        {
+            ChoseDirection();
 
             actuator.TriggerChangePigeon();
         }
 
         private bool VerifyIfItIsTimeToSleep()
         {
-            return timesTurn >= Config.pigeonMaxTimesTurn && timesWalkAfterTurn >= Config.pigeonMaxTimesWalkAfterTurn;
+            return timesTurn >= Config.pigeonMaxTimesTurn || timesWalk >= Config.pigeonMaxTimesWalk;
         }
 
         private void ExecuteWalk(int newPosition)
@@ -166,8 +183,21 @@ namespace PigeonsTP2
             places[newPosition].sensor.AddPigeonInPlace(places[newPosition].pigeon);
             actuator.TriggerChangePigeon();
 
-            if (timesTurn >= Config.pigeonMaxTimesTurn)
-                timesWalkAfterTurn++;
+            timesWalk++;
+        }
+
+        internal void Fly()
+        {
+            if (pigeonAction == PigeonAction.Sleeping)
+            {
+                SetWakeUp();
+                return;
+            }
+
+            places[currentPosition].pigeon = null;
+            actuator.TriggerChangePigeon();
+
+            Destroy();
         }
 
         public void Destroy()

@@ -11,6 +11,9 @@ namespace PigeonsTP2
         public delegate void ChangingEnvironmentActuator(Place place);
         public event ChangingEnvironmentActuator RaiseChangeEnvironment;
 
+        public delegate void ChangingCatActuator(bool visible);
+        public event ChangingCatActuator RaiseChangeCat;
+
         public EnvironmentActuator()
         {
         }
@@ -18,6 +21,11 @@ namespace PigeonsTP2
         public void TriggerChangeEnvironment(Place place)
         {
             RaiseChangeEnvironment(place);
+        }
+
+        public void TriggerChangeCat(bool visible)
+        {
+            RaiseChangeCat(visible);
         }
     }
 }
