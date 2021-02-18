@@ -48,14 +48,14 @@ namespace PigeonsTP2
 
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 
-            tableLayoutPanel1.BackColor = System.Drawing.Color.Gainsboro;
             tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel1.ColumnCount = Config.environmentSize;
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.Size = new System.Drawing.Size(placeSize + Config.environmentSize, Config.environmentPlaceSizeHeight);
             tableLayoutPanel1.Location = new System.Drawing.Point(71, 512);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.BackColor = Color.Azure;
+            tableLayoutPanel1.BackColor = Color.Transparent;
+            tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
             tableLayoutPanel1.BringToFront();
 
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, Config.environmentPlaceSizeWidth));
@@ -73,9 +73,9 @@ namespace PigeonsTP2
                 ((ISupportInitialize)(pictureBoxGeneral)).BeginInit();
                 pictureBoxGeneral.InitialImage = null;
                 pictureBoxGeneral.Name = "pictureBoxGeneral" + e.ToString();
-                pictureBoxGeneral.Size = new System.Drawing.Size(40, 55);
+                pictureBoxGeneral.Size = new System.Drawing.Size(Config.environmentPlaceSizeWidth, 55);
                 pictureBoxGeneral.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-                pictureBoxGeneral.Anchor = AnchorStyles.None;
+                pictureBoxGeneral.Anchor = AnchorStyles.Bottom;
                 pictureBoxGeneral.Visible = true;
                 tableLayoutPanel1.Controls.Add(pictureBoxGeneral, e, 0);
                 ((ISupportInitialize)(pictureBoxGeneral)).EndInit();

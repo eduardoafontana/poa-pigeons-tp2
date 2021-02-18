@@ -30,7 +30,7 @@ namespace PigeonsTP2
 
         public Pigeon(List<Place> places, int currentPosition)
         {
-            index = random.Next(1, 1); //TODO after, alter this second 1 for the number of pigeons images
+            index = random.Next(1, 10);
 
             ChoseDirection();
 
@@ -141,7 +141,7 @@ namespace PigeonsTP2
 
         private void SetSleep()
         {
-            ImagePath = String.Format("Assets\\window.png", index);
+            ImagePath = String.Format("Assets\\pigeon{0}_Zzzz.png", index);
             pigeonAction = PigeonAction.Sleeping;
 
             timesTurn = 0;
