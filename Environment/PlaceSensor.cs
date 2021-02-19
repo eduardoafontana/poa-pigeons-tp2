@@ -25,7 +25,20 @@ namespace PigeonsTP2
             pigeon.actuator.RaiseChangePigeon += new PigeonActuator.ChangingPigeonActuator(placeSensor_OnPigeonChange);
         }
 
+        internal void AddFoodInPlace(Food food)
+        {
+            if (food == null)
+                return;
+
+            food.actuator.RaiseChangeFood += new FoodActuator.ChangingFoodActuator(placeSensor_OnFoodChange);
+        }
+
         private void placeSensor_OnPigeonChange()
+        {
+            environment.actuator.TriggerChangeEnvironment(place);
+        }
+
+        private void placeSensor_OnFoodChange()
         {
             environment.actuator.TriggerChangeEnvironment(place);
         }

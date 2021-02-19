@@ -45,6 +45,9 @@ namespace PigeonsTP2
 
                     if (place.pigeon != null)
                         picture.ImageLocation = place.pigeon.ImagePath;
+
+                    if (place.food != null)
+                        picture.ImageLocation = place.food.ImagePath;
                 }));
             }
             catch (System.InvalidOperationException ex)
@@ -66,7 +69,12 @@ namespace PigeonsTP2
             {
                 Engine.Stop();
             }
-}
+        }
+
+        public void ClickOnPlace(object sender, MouseEventArgs e)
+        {
+            Engine.environment.TryAddFood(tableLayoutPanel1.GetColumn((PictureBox)sender));
+        }
 
         private void CreateEnvironmentPresentation()
         {
@@ -103,6 +111,7 @@ namespace PigeonsTP2
                 pictureBoxGeneral.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
                 pictureBoxGeneral.Anchor = AnchorStyles.Bottom;
                 pictureBoxGeneral.Visible = true;
+                pictureBoxGeneral.MouseClick += new MouseEventHandler(ClickOnPlace);
                 tableLayoutPanel1.Controls.Add(pictureBoxGeneral, e, 0);
                 ((ISupportInitialize)(pictureBoxGeneral)).EndInit();
             }

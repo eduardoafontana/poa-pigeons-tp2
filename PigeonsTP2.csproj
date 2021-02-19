@@ -48,8 +48,10 @@
     <Compile Include="Config.cs" />
     <Compile Include="Environment\Cat.cs" />
     <Compile Include="Environment\IElement.cs" />
+    <Compile Include="Environment\Food.cs" />
     <Compile Include="Environment\PigeonAction.cs" />
     <Compile Include="Environment\CatActuator.cs" />
+    <Compile Include="Environment\FoodActuator.cs" />
     <Compile Include="Environment\PigeonActuator.cs" />
     <Compile Include="Environment\PigeonSensor.cs" />
     <Compile Include="Environment\PlaceSensor.cs" />
@@ -93,6 +95,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\food_good.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\food_medium.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\food_rotten.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\cat3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

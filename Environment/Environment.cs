@@ -17,12 +17,15 @@ namespace PigeonsTP2
 
         public Environment()
         {
+            cat = new Cat();
+
             for (int i = 0; i < Config.environmentSize; i++)
             {
-                places.Add(new Place(this, i));
-            }
+                Place place = new Place(this, i);
+                place.sensor.AddCatBehavior(cat);
 
-            cat = new Cat();
+                places.Add(place);
+            }
         }
 
         internal void Execute()
@@ -34,10 +37,11 @@ namespace PigeonsTP2
         private void GeneratePigeon()
         {
             Place place = places[currentRandomPosition];
+
             place.pigeon = new Pigeon(places, currentRandomPosition);
             place.pigeon.sensor.AddCatAffraid(cat);
+
             place.sensor.AddPigeonInPlace(place.pigeon);
-            place.sensor.AddCatBehavior(cat);
 
             actuator.TriggerChangeEnvironment(place);
 
@@ -54,6 +58,18 @@ namespace PigeonsTP2
             return false;
         }
 
+        internal void TryAddFood(int position)
+        {
+            if (!places[currentRandomPosition].isClean())
+                return;
+
+            Place place = places[position];
+            place.food = new Food(places, position);
+            place.sensor.AddFoodInPlace(place.food);
+
+            actuator.TriggerChangeEnvironment(place);
+        }
+
         internal void CloseThreads()
         {
             foreach (var item in places)
@@ -62,6 +78,12 @@ namespace PigeonsTP2
                 {
                     item.pigeon.Destroy();
                     item.pigeon = null;
+                }
+
+                if (item.food != null)
+                {
+                    item.food.Destroy();
+                    item.food = null;
                 }
             }
         
