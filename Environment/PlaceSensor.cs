@@ -23,6 +23,7 @@ namespace PigeonsTP2
                 return;
 
             pigeon.actuator.RaiseChangePigeon += new PigeonActuator.ChangingPigeonActuator(placeSensor_OnPigeonChange);
+            pigeon.actuator.RaiseEatPigeon += new PigeonActuator.EatingPigeonActuator(placeSensor_OnPigeonEat);
         }
 
         internal void AddFoodInPlace(Food food)
@@ -36,6 +37,11 @@ namespace PigeonsTP2
         private void placeSensor_OnPigeonChange()
         {
             environment.actuator.TriggerChangeEnvironment(place);
+        }
+
+        private void placeSensor_OnPigeonEat(int position)
+        {
+            environment.ExecuteEat(position);
         }
 
         private void placeSensor_OnFoodChange()

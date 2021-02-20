@@ -11,6 +11,9 @@ namespace PigeonsTP2
         public delegate void ChangingPigeonActuator();
         public event ChangingPigeonActuator RaiseChangePigeon;
 
+        public delegate void EatingPigeonActuator(int position);
+        public event EatingPigeonActuator RaiseEatPigeon;
+
         public PigeonActuator()
         {
         }
@@ -18,6 +21,11 @@ namespace PigeonsTP2
         public void TriggerChangePigeon()
         {
             RaiseChangePigeon();
+        }
+
+        public void TriggerEatPigeon(int position)
+        {
+            RaiseEatPigeon(position);
         }
     }
 }

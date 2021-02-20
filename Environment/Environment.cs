@@ -48,6 +48,17 @@ namespace PigeonsTP2
             Thread.Sleep(Config.environmentPigeonDelay);
         }
 
+        internal void ExecuteEat(int position)
+        {
+            if (places[position].food == null)
+                return;
+
+            if (places[position].food.CurrentState != FoodState.Good)
+                return;
+
+            places[position].food.ExecuteWasEaten();
+        }
+
         private bool ShouldThereBeANewPigeon()
         {
             currentRandomPosition = random.Next(0, Config.environmentSize);

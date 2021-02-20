@@ -26,6 +26,8 @@ namespace PigeonsTP2
 
         private FoodState currentState;
 
+        public FoodState CurrentState { get { return currentState; } }
+
         private List<Place> places;
 
         private Random random = new Random();
@@ -79,6 +81,13 @@ namespace PigeonsTP2
                     Destroy();
                     break;
             }
+        }
+
+        internal void ExecuteWasEaten()
+        {
+            places[position].food = null;
+            actuator.TriggerChangeFood();
+            Destroy();
         }
 
         public void Destroy()

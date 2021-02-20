@@ -87,10 +87,21 @@ namespace PigeonsTP2
 
             int newPosition;
             bool timeToSleep;
+            bool thereIsFood;
 
             switch (pigeonAction)
             {
                 case PigeonAction.WalkingLeft:
+                    newPosition = currentPosition - 1;
+
+                    thereIsFood = VerifyIfThereIsFoodLeft(newPosition);
+
+                    if (thereIsFood)
+                    {
+                        EatFood(newPosition);
+                        break;
+                    }
+
                     timeToSleep = VerifyIfItIsTimeToSleep();
 
                     if (timeToSleep)
@@ -98,8 +109,6 @@ namespace PigeonsTP2
                         SetSleep();
                         break;
                     }
-
-                    newPosition = currentPosition - 1;
 
                     if (newPosition < 0)
                     {
@@ -117,6 +126,16 @@ namespace PigeonsTP2
 
                     break;
                 case PigeonAction.WalkingRight:
+                    newPosition = currentPosition + 1;
+
+                    thereIsFood = VerifyIfThereIsFoodRight(newPosition);
+
+                    if (thereIsFood)
+                    {
+                        EatFood(newPosition);
+                        break;
+                    }
+
                     timeToSleep = VerifyIfItIsTimeToSleep();
 
                     if (timeToSleep)
@@ -124,8 +143,6 @@ namespace PigeonsTP2
                         SetSleep();
                         break;
                     }
-
-                    newPosition = currentPosition + 1;
 
                     if (newPosition == places.Count)
                     {
@@ -147,6 +164,30 @@ namespace PigeonsTP2
                 case PigeonAction.Eating:
                     break;
             }
+        }
+
+        private void EatFood(int newPosition)
+        {
+            actuator.TriggerEatPigeon(newPosition);
+
+            Thread.Sleep(1000);
+            //Aqui fazer a lógica de alteração da imagem talvez
+        }
+
+        private bool VerifyIfThereIsFoodLeft(int newPosition)
+        {
+            if (newPosition < 0)
+                return false;
+
+            return places[newPosition].food != null;
+        }
+
+        private bool VerifyIfThereIsFoodRight(int newPosition)
+        {
+            if (newPosition == places.Count)
+                return false;
+
+            return places[newPosition].food != null;
         }
 
         private void SetSleep()
