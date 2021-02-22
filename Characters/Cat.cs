@@ -13,7 +13,7 @@ namespace PigeonsTP2
 
         private Thread thread = null;
 
-        public CatActuator actuator { get; set; }
+        public CatActuator actuator { get; }
 
         public Cat()
         {

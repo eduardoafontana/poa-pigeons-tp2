@@ -10,7 +10,7 @@ namespace PigeonsTP2
     public class Pigeon : IElement
     {
         public string ImagePath { get; private set; }
-        public PigeonActuator actuator { get; set; }
+        public PigeonActuator actuator { get; }
         public PigeonSensor sensor { get; }
 
         private PigeonAction pigeonAction;
@@ -251,7 +251,7 @@ namespace PigeonsTP2
                 return;
             }
 
-            int newPosition = Randomize.GetValue(0, Config.environmentSize);
+            int newPosition = Randomize.GetValue(0, Config.environmentSize - 1);
 
             if (!places[newPosition].isClean())
                 return;

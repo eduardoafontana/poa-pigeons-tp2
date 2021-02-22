@@ -66,7 +66,7 @@ namespace PigeonsTP2
             if (quantityOfPigeons >= Config.environmentMaxNumberOfPigeons)
                 return false;
 
-            currentRandomPosition = Randomize.GetValue(0, Config.environmentSize);
+            currentRandomPosition = Randomize.GetValue(0, Config.environmentSize - 1);
 
             if (places[currentRandomPosition].Pigeon == null)
                 return true;
