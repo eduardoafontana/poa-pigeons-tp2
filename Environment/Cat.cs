@@ -37,13 +37,13 @@ namespace PigeonsTP2
 
         internal void Execute()
         {
-            int timeToNextCat = random.Next(8000, 30001);
+            int timeToNextCat = random.Next(Config.catMinTimeToNextCat, Config.catMaxTimeToNextCat);
 
             Thread.Sleep(timeToNextCat);
 
             actuator.TriggerShowCat(true);
 
-            Thread.Sleep(Config.environmentCatShowingDelay);
+            Thread.Sleep(Config.catShowingDelay);
 
             actuator.TriggerShowCat(false);
         }

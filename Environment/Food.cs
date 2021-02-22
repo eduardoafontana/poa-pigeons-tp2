@@ -7,13 +7,6 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
-    public enum FoodState
-    {
-        Good,
-        Medium,
-        Rotten
-    }
-
     public class Food : IElement
     {
         public string ImagePath { get; set; }
@@ -61,7 +54,7 @@ namespace PigeonsTP2
 
         internal void Execute()
         {
-            int mileseconds = random.Next(2000, 8001);
+            int mileseconds = random.Next(Config.foodMinTimeChangeState, Config.foodMaxTimeChangeState);
 
             Thread.Sleep(mileseconds);
 

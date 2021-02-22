@@ -11,13 +11,20 @@ namespace PigeonsTP2
         public static int environmentSize = 19;
         public static int environmentPlaceSizeWidth = 40;
         public static int environmentPlaceSizeHeight = 100;
-        public static int elementSize = 15;
 
         public static int environmentPigeonDelay = 6000;
-        public static int environmentCatShowingDelay = 5000;
-        public static int pigeonActionDelay = 2000;
+        public static int environmentMaxNumberOfPigeons = 5;
 
-        public static int pigeonMaxTimesTurn = 3;
-        public static int pigeonMaxTimesWalk = 5;
+        public static int pigeonActionDelay = 1000;
+        public static int pigeonSleepDelay = 2000;
+        public static int pigeonMinTimesWaiting = 10;
+        public static int pigeonMaxTimesWaiting = 31;
+
+        public static int foodMinTimeChangeState = 5000;
+        public static int foodMaxTimeChangeState = 12001;
+
+        public static int catMinTimeToNextCat = 8000;
+        public static int catMaxTimeToNextCat = 30001;
+        public static int catShowingDelay = 3500;
     }
 }

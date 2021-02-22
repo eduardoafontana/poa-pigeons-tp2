@@ -25,7 +25,7 @@ namespace PigeonsTP2
             if (!appear)
                 return;
 
-            pigeon.Fly();
+            pigeon.WakeUpOrChangePosition();
         }
     }
 }

@@ -25,17 +25,20 @@ namespace PigeonsTP2
 
         private int currentPosition;
 
-        private int timesTurn = -1;
+        private int timesWaiting = 0;
 
-        private int timesWalk = 0;
+        private int maxTimeWiting;
 
         public PigeonSensor sensor;
 
         public Pigeon(List<Place> places, int currentPosition)
         {
             index = random.Next(1, 10);
+            maxTimeWiting = random.Next(Config.pigeonMinTimesWaiting, Config.pigeonMaxTimesWaiting);
 
             ChoseDirection();
+
+            pigeonAction = PigeonAction.Waiting;
 
             actuator = new PigeonActuator();
             sensor = new PigeonSensor(this);
@@ -60,17 +63,11 @@ namespace PigeonsTP2
         private void SetDirectionRight()
         {
             ImagePath = String.Format("Assets\\pigeon{0}_right.png", index);
-            pigeonAction = PigeonAction.WalkingRight;
-
-            timesTurn++;
         }
 
         private void SetDirectionLeft()
         {
             ImagePath = String.Format("Assets\\pigeon{0}_left.png", index);
-            pigeonAction = PigeonAction.WalkingLeft;
-
-            timesTurn++;
         }
 
         private void Loop()
@@ -83,111 +80,137 @@ namespace PigeonsTP2
 
         internal void Execute()
         {
+            if (pigeonAction == PigeonAction.Sleeping)
+                Thread.Sleep(Config.pigeonSleepDelay);
+
             Thread.Sleep(Config.pigeonActionDelay);
 
-            int newPosition;
+            if (pigeonAction != PigeonAction.Waiting)
+                return;
+
             bool timeToSleep;
-            bool thereIsFood;
 
-            switch (pigeonAction)
+            int foodPosition = VerifyIfThereIsFood();
+
+            if (foodPosition > 0)
             {
-                case PigeonAction.WalkingLeft:
-                    newPosition = currentPosition - 1;
-
-                    thereIsFood = VerifyIfThereIsFoodLeft(newPosition);
-
-                    if (thereIsFood)
-                    {
-                        EatFood(newPosition);
-                        break;
-                    }
-
-                    timeToSleep = VerifyIfItIsTimeToSleep();
-
-                    if (timeToSleep)
-                    {
-                        SetSleep();
-                        break;
-                    }
-
-                    if (newPosition < 0)
-                    {
-                        SetDirectionRight();
-                        break;
-                    }
-
-                    if (!places[newPosition].isClean())
-                    {
-                        SetDirectionRight();
-                        break;
-                    }
-
-                    ExecuteWalk(newPosition);
-
-                    break;
-                case PigeonAction.WalkingRight:
-                    newPosition = currentPosition + 1;
-
-                    thereIsFood = VerifyIfThereIsFoodRight(newPosition);
-
-                    if (thereIsFood)
-                    {
-                        EatFood(newPosition);
-                        break;
-                    }
-
-                    timeToSleep = VerifyIfItIsTimeToSleep();
-
-                    if (timeToSleep)
-                    {
-                        SetSleep();
-                        break;
-                    }
-
-                    if (newPosition == places.Count)
-                    {
-                        SetDirectionLeft();
-                        break;
-                    }
-
-                    if (!places[newPosition].isClean())
-                    {
-                        SetDirectionLeft();
-                        break;
-                    }
-
-                    ExecuteWalk(newPosition);
-
-                    break;
-                case PigeonAction.Sleeping:
-                    break;
-                case PigeonAction.Eating:
-                    break;
+                TryEatFood(foodPosition);
+                return;
             }
+
+            timesWaiting++;
+
+            timeToSleep = VerifyIfItIsTimeToSleep();
+
+            if (timeToSleep)
+            {
+                SetSleep();
+                return;
+            }
+        }
+
+        private void TryEatFood(int foodPosition)
+        {
+            if (foodPosition > currentPosition)
+            {
+                int firstPositionRight = currentPosition + 1;
+
+                for (int i = firstPositionRight; i < Config.environmentSize; i++)
+                {
+                    bool stopGoForward = ExecuteTryEatFood(i, foodPosition);
+
+                    if (stopGoForward)
+                        return;
+                }
+            }
+            else
+            {
+                int firstPositionLeft = currentPosition - 1;
+
+                for (int i = firstPositionLeft; i >= 0; i--)
+                {
+                    bool stopGoForward = ExecuteTryEatFood(i, foodPosition);
+
+                    if (stopGoForward)
+                        return;
+                }
+            }
+        }
+
+        private bool ExecuteTryEatFood(int tryingPosition, int foodPosition)
+        {
+            if (places[tryingPosition].food != null && places[tryingPosition].food.CurrentState == FoodState.Good)
+            {
+                SetDirection(tryingPosition);
+                EatFood(tryingPosition);
+
+                return true;
+            }
+
+            if (places[tryingPosition].pigeon != null)
+            {
+                pigeonAction = PigeonAction.Waiting;
+                return true;
+            }
+
+            if (places[foodPosition].food == null)
+            {
+                pigeonAction = PigeonAction.Waiting;
+                return true;
+            }
+
+            if (places[foodPosition].food != null && places[foodPosition].food.CurrentState != FoodState.Good)
+            {
+                pigeonAction = PigeonAction.Waiting;
+                return true;
+            }
+
+            SetDirection(tryingPosition);
+            ExecuteWalk(tryingPosition);
+
+            return false;
+        }
+
+        private int VerifyIfThereIsFood()
+        {
+            int firstPositionLeft = currentPosition - 1;
+
+            for (int i = firstPositionLeft; i >= 0; i--)
+            {
+                if (places[i].food != null && places[i].food.CurrentState == FoodState.Good)
+                    return i;
+            }
+
+            int firstPositionRight = currentPosition + 1;
+
+            for (int i = firstPositionRight; i < Config.environmentSize; i++)
+            {
+                if (places[i].food != null && places[i].food.CurrentState == FoodState.Good)
+                    return i;
+            }
+
+            return -1;
         }
 
         private void EatFood(int newPosition)
         {
+            String currentDirection = ImagePath;
+
+            if(ImagePath.Contains("left"))
+                ImagePath = String.Format("Assets\\pigeon{0}_left_nham.png", index);
+            else
+                ImagePath = String.Format("Assets\\pigeon{0}_right_nham.png", index);
+
             actuator.TriggerEatPigeon(newPosition);
+            actuator.TriggerChangePigeon();
 
-            Thread.Sleep(1000);
-            //Aqui fazer a lógica de alteração da imagem talvez
-        }
+            Thread.Sleep(Config.pigeonActionDelay);
 
-        private bool VerifyIfThereIsFoodLeft(int newPosition)
-        {
-            if (newPosition < 0)
-                return false;
+            ImagePath = currentDirection;
 
-            return places[newPosition].food != null;
-        }
+            actuator.TriggerChangePigeon();
 
-        private bool VerifyIfThereIsFoodRight(int newPosition)
-        {
-            if (newPosition == places.Count)
-                return false;
-
-            return places[newPosition].food != null;
+            pigeonAction = PigeonAction.Waiting;
         }
 
         private void SetSleep()
@@ -195,14 +218,15 @@ namespace PigeonsTP2
             ImagePath = String.Format("Assets\\pigeon{0}_Zzzz.png", index);
             pigeonAction = PigeonAction.Sleeping;
 
-            timesTurn = 0;
-            timesWalk = 0;
+            timesWaiting = 0;
 
             actuator.TriggerChangePigeon();
         }
 
         private void SetWakeUp()
         {
+            pigeonAction = PigeonAction.Waiting;
+
             ChoseDirection();
 
             actuator.TriggerChangePigeon();
@@ -210,7 +234,7 @@ namespace PigeonsTP2
 
         private bool VerifyIfItIsTimeToSleep()
         {
-            return timesTurn >= Config.pigeonMaxTimesTurn || timesWalk >= Config.pigeonMaxTimesWalk;
+            return timesWaiting >= maxTimeWiting;
         }
 
         private void ExecuteWalk(int newPosition)
@@ -224,10 +248,12 @@ namespace PigeonsTP2
             places[newPosition].sensor.AddPigeonInPlace(places[newPosition].pigeon);
             actuator.TriggerChangePigeon();
 
-            timesWalk++;
+            Thread.Sleep(Config.pigeonActionDelay);
+
+            pigeonAction = PigeonAction.Waiting;
         }
 
-        internal void Fly()
+        internal void WakeUpOrChangePosition()
         {
             if (pigeonAction == PigeonAction.Sleeping)
             {
@@ -235,10 +261,28 @@ namespace PigeonsTP2
                 return;
             }
 
-            places[currentPosition].pigeon = null;
-            actuator.TriggerChangePigeon();
+            int newPosition = random.Next(0, Config.environmentSize);
 
-            Destroy();
+            if (!places[newPosition].isClean())
+                return;
+
+            SetDirection(newPosition);
+
+            ExecuteWalk(newPosition);
+        }
+
+        private void SetDirection(int newPosition)
+        {
+            if (newPosition > currentPosition)
+            {
+                SetDirectionRight();
+                pigeonAction = PigeonAction.WalkingRight;
+            }
+            else
+            {
+                SetDirectionLeft();
+                pigeonAction = PigeonAction.WalkingLeft;
+            }
         }
 
         public void Destroy()

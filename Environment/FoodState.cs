@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
-    public enum PigeonAction
+    public enum FoodState
     {
-        Waiting,
-        WalkingLeft,
-        WalkingRight,
-        Sleeping,
-        Eating
+        Good,
+        Medium,
+        Rotten
     }
 }

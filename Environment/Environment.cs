@@ -12,6 +12,7 @@ namespace PigeonsTP2
         private Random random = new Random();
         private int currentRandomPosition;
         private Cat cat;
+        private int quantityOfPigeons = 0;
 
         public EnvironmentActuator actuator = new EnvironmentActuator();
 
@@ -45,6 +46,8 @@ namespace PigeonsTP2
 
             actuator.TriggerChangeEnvironment(place);
 
+            quantityOfPigeons++;
+
             Thread.Sleep(Config.environmentPigeonDelay);
         }
 
@@ -61,6 +64,9 @@ namespace PigeonsTP2
 
         private bool ShouldThereBeANewPigeon()
         {
+            if (quantityOfPigeons >= Config.environmentMaxNumberOfPigeons)
+                return false;
+
             currentRandomPosition = random.Next(0, Config.environmentSize);
 
             if (places[currentRandomPosition].pigeon == null)
@@ -71,7 +77,7 @@ namespace PigeonsTP2
 
         internal void TryAddFood(int position)
         {
-            if (!places[currentRandomPosition].isClean())
+            if (!places[position].isClean())
                 return;
 
             Place place = places[position];
