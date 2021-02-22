@@ -39,15 +39,15 @@ namespace PigeonsTP2
                     if (place == null)
                         return;
 
-                    PictureBox picture = (PictureBox)tableLayoutPanel1.Controls.Find("pictureBoxGeneral" + place.index.ToString(), false)[0];
+                    PictureBox picture = (PictureBox)tableLayoutPanel1.Controls.Find("pictureBoxGeneral" + place.Index.ToString(), false)[0];
 
                     picture.ImageLocation = String.Empty;
 
-                    if (place.pigeon != null)
-                        picture.ImageLocation = place.pigeon.ImagePath;
+                    if (place.Pigeon != null)
+                        picture.ImageLocation = place.Pigeon.ImagePath;
 
-                    if (place.food != null)
-                        picture.ImageLocation = place.food.ImagePath;
+                    if (place.Food != null)
+                        picture.ImageLocation = place.Food.ImagePath;
                 }));
             }
             catch (System.InvalidOperationException ex)

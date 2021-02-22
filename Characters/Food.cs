@@ -9,21 +9,14 @@ namespace PigeonsTP2
 {
     public class Food : IElement
     {
-        public string ImagePath { get; set; }
-
-        private Thread thread = null;
-
-        public FoodActuator actuator { get; set; }
-
-        private int position;
-
-        private FoodState currentState;
-
+        public string ImagePath { get; private set; }
+        public FoodActuator actuator { get; }
         public FoodState CurrentState { get { return currentState; } }
 
+        private Thread thread = null;
+        private int position;
+        private FoodState currentState;
         private List<Place> places;
-
-        private Random random = new Random();
 
         public Food(List<Place> places, int position)
         {
@@ -54,7 +47,7 @@ namespace PigeonsTP2
 
         internal void Execute()
         {
-            int mileseconds = random.Next(Config.foodMinTimeChangeState, Config.foodMaxTimeChangeState);
+            int mileseconds = Randomize.GetValue(Config.foodMinTimeChangeState, Config.foodMaxTimeChangeState);
 
             Thread.Sleep(mileseconds);
 
@@ -69,7 +62,7 @@ namespace PigeonsTP2
                     actuator.TriggerChangeFood();
                     break;
                 case FoodState.Rotten:
-                    places[position].food = null;
+                    places[position].Food = null;
                     actuator.TriggerChangeFood();
                     Destroy();
                     break;
@@ -78,7 +71,7 @@ namespace PigeonsTP2
 
         internal void ExecuteWasEaten()
         {
-            places[position].food = null;
+            places[position].Food = null;
             actuator.TriggerChangeFood();
             Destroy();
         }

@@ -9,32 +9,22 @@ namespace PigeonsTP2
 {
     public class Pigeon : IElement
     {
-        public string ImagePath { get; set; }
+        public string ImagePath { get; private set; }
+        public PigeonActuator actuator { get; set; }
+        public PigeonSensor sensor { get; }
 
         private PigeonAction pigeonAction;
-
         private Thread thread = null;
-
-        public PigeonActuator actuator { get; set; }
-
-        private Random random = new Random();
-
         private int index = 0;
-
         private List<Place> places;
-
         private int currentPosition;
-
         private int timesWaiting = 0;
-
         private int maxTimeWiting;
-
-        public PigeonSensor sensor;
 
         public Pigeon(List<Place> places, int currentPosition)
         {
-            index = random.Next(1, 10);
-            maxTimeWiting = random.Next(Config.pigeonMinTimesWaiting, Config.pigeonMaxTimesWaiting);
+            index = Randomize.GetValue(1, 9);
+            maxTimeWiting = Randomize.GetValue(Config.pigeonMinTimesWaiting, Config.pigeonMaxTimesWaiting);
 
             ChoseDirection();
 
@@ -52,7 +42,7 @@ namespace PigeonsTP2
 
         private void ChoseDirection()
         {
-            int indexLeftRight = random.Next(0, 100);
+            int indexLeftRight = Randomize.GetValue(0, 100);
 
             if (indexLeftRight % 2 == 0)
                 SetDirectionLeft();
@@ -139,7 +129,7 @@ namespace PigeonsTP2
 
         private bool ExecuteTryEatFood(int tryingPosition, int foodPosition)
         {
-            if (places[tryingPosition].food != null && places[tryingPosition].food.CurrentState == FoodState.Good)
+            if (places[tryingPosition].Food != null && places[tryingPosition].Food.CurrentState == FoodState.Good)
             {
                 SetDirection(tryingPosition);
                 EatFood(tryingPosition);
@@ -147,19 +137,19 @@ namespace PigeonsTP2
                 return true;
             }
 
-            if (places[tryingPosition].pigeon != null)
+            if (places[tryingPosition].Pigeon != null)
             {
                 pigeonAction = PigeonAction.Waiting;
                 return true;
             }
 
-            if (places[foodPosition].food == null)
+            if (places[foodPosition].Food == null)
             {
                 pigeonAction = PigeonAction.Waiting;
                 return true;
             }
 
-            if (places[foodPosition].food != null && places[foodPosition].food.CurrentState != FoodState.Good)
+            if (places[foodPosition].Food != null && places[foodPosition].Food.CurrentState != FoodState.Good)
             {
                 pigeonAction = PigeonAction.Waiting;
                 return true;
@@ -177,7 +167,7 @@ namespace PigeonsTP2
 
             for (int i = firstPositionLeft; i >= 0; i--)
             {
-                if (places[i].food != null && places[i].food.CurrentState == FoodState.Good)
+                if (places[i].Food != null && places[i].Food.CurrentState == FoodState.Good)
                     return i;
             }
 
@@ -185,7 +175,7 @@ namespace PigeonsTP2
 
             for (int i = firstPositionRight; i < Config.environmentSize; i++)
             {
-                if (places[i].food != null && places[i].food.CurrentState == FoodState.Good)
+                if (places[i].Food != null && places[i].Food.CurrentState == FoodState.Good)
                     return i;
             }
 
@@ -239,13 +229,13 @@ namespace PigeonsTP2
 
         private void ExecuteWalk(int newPosition)
         {
-            places[newPosition].pigeon = places[currentPosition].pigeon;
-            places[currentPosition].pigeon = null;
+            places[newPosition].Pigeon = places[currentPosition].Pigeon;
+            places[currentPosition].Pigeon = null;
             currentPosition = newPosition;
 
             actuator.TriggerChangePigeon();
 
-            places[newPosition].sensor.AddPigeonInPlace(places[newPosition].pigeon);
+            places[newPosition].Sensor.AddPigeonInPlace(places[newPosition].Pigeon);
             actuator.TriggerChangePigeon();
 
             Thread.Sleep(Config.pigeonActionDelay);
@@ -261,7 +251,7 @@ namespace PigeonsTP2
                 return;
             }
 
-            int newPosition = random.Next(0, Config.environmentSize);
+            int newPosition = Randomize.GetValue(0, Config.environmentSize);
 
             if (!places[newPosition].isClean())
                 return;

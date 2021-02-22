@@ -9,7 +9,6 @@ namespace PigeonsTP2
     public class Environment
     {
         private List<Place> places = new List<Place>();
-        private Random random = new Random();
         private int currentRandomPosition;
         private Cat cat;
         private int quantityOfPigeons = 0;
@@ -23,7 +22,7 @@ namespace PigeonsTP2
             for (int i = 0; i < Config.environmentSize; i++)
             {
                 Place place = new Place(this, i);
-                place.sensor.AddCatBehavior(cat);
+                place.Sensor.AddCatBehavior(cat);
 
                 places.Add(place);
             }
@@ -39,10 +38,10 @@ namespace PigeonsTP2
         {
             Place place = places[currentRandomPosition];
 
-            place.pigeon = new Pigeon(places, currentRandomPosition);
-            place.pigeon.sensor.AddCatAffraid(cat);
+            place.Pigeon = new Pigeon(places, currentRandomPosition);
+            place.Pigeon.sensor.AddCatAffraid(cat);
 
-            place.sensor.AddPigeonInPlace(place.pigeon);
+            place.Sensor.AddPigeonInPlace(place.Pigeon);
 
             actuator.TriggerChangeEnvironment(place);
 
@@ -53,13 +52,13 @@ namespace PigeonsTP2
 
         internal void ExecuteEat(int position)
         {
-            if (places[position].food == null)
+            if (places[position].Food == null)
                 return;
 
-            if (places[position].food.CurrentState != FoodState.Good)
+            if (places[position].Food.CurrentState != FoodState.Good)
                 return;
 
-            places[position].food.ExecuteWasEaten();
+            places[position].Food.ExecuteWasEaten();
         }
 
         private bool ShouldThereBeANewPigeon()
@@ -67,9 +66,9 @@ namespace PigeonsTP2
             if (quantityOfPigeons >= Config.environmentMaxNumberOfPigeons)
                 return false;
 
-            currentRandomPosition = random.Next(0, Config.environmentSize);
+            currentRandomPosition = Randomize.GetValue(0, Config.environmentSize);
 
-            if (places[currentRandomPosition].pigeon == null)
+            if (places[currentRandomPosition].Pigeon == null)
                 return true;
 
             return false;
@@ -81,8 +80,8 @@ namespace PigeonsTP2
                 return;
 
             Place place = places[position];
-            place.food = new Food(places, position);
-            place.sensor.AddFoodInPlace(place.food);
+            place.Food = new Food(places, position);
+            place.Sensor.AddFoodInPlace(place.Food);
 
             actuator.TriggerChangeEnvironment(place);
         }
@@ -91,16 +90,16 @@ namespace PigeonsTP2
         {
             foreach (var item in places)
             {
-                if (item.pigeon != null)
+                if (item.Pigeon != null)
                 {
-                    item.pigeon.Destroy();
-                    item.pigeon = null;
+                    item.Pigeon.Destroy();
+                    item.Pigeon = null;
                 }
 
-                if (item.food != null)
+                if (item.Food != null)
                 {
-                    item.food.Destroy();
-                    item.food = null;
+                    item.Food.Destroy();
+                    item.Food = null;
                 }
             }
         

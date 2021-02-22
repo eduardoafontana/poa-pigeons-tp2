@@ -8,7 +8,7 @@ namespace PigeonsTP2
 {
     public interface IElement
     {
-        string ImagePath { get; set; }
+        string ImagePath { get; }
 
         void Destroy();
     }

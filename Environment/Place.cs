@@ -8,22 +8,20 @@ namespace PigeonsTP2
 {
     public class Place
     {
-        public Pigeon pigeon { get; set; }
-        public Food food { get; set; }
-
-        public int index { get; set; }
-
-        public PlaceSensor sensor;
+        public Pigeon Pigeon { get; set; }
+        public Food Food { get; set; }
+        public int Index { get; }
+        public PlaceSensor Sensor { get; }
 
         public Place(Environment environment, int index)
         {
-            this.index = index;
-            sensor = new PlaceSensor(environment, this);
+            Index = index;
+            Sensor = new PlaceSensor(environment, this);
         }
 
         internal bool isClean()
         {
-            return pigeon == null && food == null;
+            return Pigeon == null && Food == null;
         }
     }
 }

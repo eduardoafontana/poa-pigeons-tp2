@@ -45,20 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Randomize.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Environment\Cat.cs" />
-    <Compile Include="Environment\IElement.cs" />
-    <Compile Include="Environment\Food.cs" />
-    <Compile Include="Environment\FoodState.cs" />
-    <Compile Include="Environment\PigeonAction.cs" />
-    <Compile Include="Environment\CatActuator.cs" />
-    <Compile Include="Environment\FoodActuator.cs" />
-    <Compile Include="Environment\PigeonActuator.cs" />
-    <Compile Include="Environment\PigeonSensor.cs" />
+    <Compile Include="Characters\Cat.cs" />
+    <Compile Include="Characters\IElement.cs" />
+    <Compile Include="Characters\Food.cs" />
+    <Compile Include="Characters\FoodState.cs" />
+    <Compile Include="Characters\PigeonAction.cs" />
+    <Compile Include="Characters\CatActuator.cs" />
+    <Compile Include="Characters\FoodActuator.cs" />
+    <Compile Include="Characters\PigeonActuator.cs" />
+    <Compile Include="Characters\PigeonSensor.cs" />
     <Compile Include="Environment\PlaceSensor.cs" />
     <Compile Include="Environment\EnvironmentActuator.cs" />
     <Compile Include="Environment\Place.cs" />
-    <Compile Include="Environment\Pigeon.cs" />
+    <Compile Include="Characters\Pigeon.cs" />
     <Compile Include="Environment\Environment.cs" />
     <Compile Include="Presentation.cs">
       <SubType>Form</SubType>

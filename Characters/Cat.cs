@@ -9,13 +9,11 @@ namespace PigeonsTP2
 {
     public class Cat : IElement
     {
-        public string ImagePath { get; set; }
+        public string ImagePath { get; }
 
         private Thread thread = null;
 
         public CatActuator actuator { get; set; }
-
-        private Random random = new Random();
 
         public Cat()
         {
@@ -37,7 +35,7 @@ namespace PigeonsTP2
 
         internal void Execute()
         {
-            int timeToNextCat = random.Next(Config.catMinTimeToNextCat, Config.catMaxTimeToNextCat);
+            int timeToNextCat = Randomize.GetValue(Config.catMinTimeToNextCat, Config.catMaxTimeToNextCat);
 
             Thread.Sleep(timeToNextCat);
 

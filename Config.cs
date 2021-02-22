@@ -18,13 +18,13 @@ namespace PigeonsTP2
         public static int pigeonActionDelay = 1000;
         public static int pigeonSleepDelay = 2000;
         public static int pigeonMinTimesWaiting = 10;
-        public static int pigeonMaxTimesWaiting = 31;
+        public static int pigeonMaxTimesWaiting = 30;
 
         public static int foodMinTimeChangeState = 5000;
-        public static int foodMaxTimeChangeState = 12001;
+        public static int foodMaxTimeChangeState = 12000;
 
         public static int catMinTimeToNextCat = 8000;
-        public static int catMaxTimeToNextCat = 30001;
+        public static int catMaxTimeToNextCat = 30000;
         public static int catShowingDelay = 3500;
     }
 }
