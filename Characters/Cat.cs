@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class represents the cat character, who eventually appears to scare the pigeons away.
+    /// The class is responsible for controlling the animation of the cat and its appearance.
+    /// All behavior is controlled via a thread. 
+    /// Interactions between threads are performed by triggering an event from the actuator. Just as the events of other threads are perceived through the sensors.
+    /// </summary>
     public class Cat : IElement
     {
         public string ImagePath { get; }

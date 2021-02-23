@@ -6,6 +6,10 @@ using System.Windows.Forms;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class is responsible for starting the system. 
+    /// As the system is based on windows forms, the first action to be taken is to create the presentation form.
+    /// </summary>
     static class Program
     {
         /// <summary>

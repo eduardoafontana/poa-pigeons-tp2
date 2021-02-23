@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This is the engine of the game. 
+    /// This class is responsible for creating the environment, which is represented by the window, and its respective thread. 
+    /// In addition, this class takes care of closing threads when the form is closed.
+    /// </summary>
     public class Engine
     {
         private static Thread environmentThread = null;

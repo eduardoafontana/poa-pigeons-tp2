@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class represents the food character. 
+    /// The food can be eaten by the pigeon. If it is not eaten, it will rot and disappear.
+    /// The class is responsible for controlling the animation of the food.
+    /// All behavior is controlled via a thread. 
+    /// Interactions between threads are performed by triggering an event from the actuator. Just as the events of other threads are perceived through the sensors.
+    /// </summary>
     public class Food : IElement
     {
         public string ImagePath { get; private set; }

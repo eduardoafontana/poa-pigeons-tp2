@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class is the place sensor.
+    /// The sensor is an auxiliary class to the main entity.
+    /// It is responsible for containing the methods that associate an actuator of some thread to which the main class wants to communicate asynchronously.
+    /// Upon receiving the actuator event, the sensor can call a main class method to execute some behavior or override a behavior by delegating to the main class actuator.
+    /// </summary>
     public class PlaceSensor
     {
         private Environment environment;

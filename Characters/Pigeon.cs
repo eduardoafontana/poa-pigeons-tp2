@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class represents the pigeon character. 
+    /// The pigeon awaits food. If he finds no food, he sleeps.
+    /// If he find fresh food, he walks towards the food. If he can get to the food before another pigeon and the food is still fresh, he eats.
+    /// If the pigeon is sleeping and the cat appears, the pigeon wakes up.
+    /// If the pigeon has woken up and the cat appears, it disperses to another random position.
+    /// The class is responsible for controlling the animation of the pigeon and the interaction between the pigeon and the other characters.
+    /// All behavior is controlled via a thread. 
+    /// Interactions between threads are performed by triggering an event from the actuator. Just as the events of other threads are perceived through the sensors.
+    /// </summary>
     public class Pigeon : IElement
     {
         public string ImagePath { get; private set; }
@@ -68,6 +78,10 @@ namespace PigeonsTP2
             }
         }
 
+        /// <summary>
+        /// This method contains the main logic of the pigeon's behavior.
+        /// The pigeon looks for food. If he finds no food, he sleeps.
+        /// </summary>
         internal void Execute()
         {
             if (pigeonAction == PigeonAction.Sleeping)
@@ -99,6 +113,9 @@ namespace PigeonsTP2
             }
         }
 
+        /// <summary>
+        /// This method is responsible for making the pigeon move to the food found.
+        /// </summary>
         private void TryEatFood(int foodPosition)
         {
             if (foodPosition > currentPosition)
@@ -127,6 +144,11 @@ namespace PigeonsTP2
             }
         }
 
+        /// <summary>
+        /// As pigeon move until the food found to eat, other events can happen.
+        /// Another pigeon may appear in the front or another food may appear in the front or the target food will rot.
+        /// So, this method is responsible for making the pigeon notice the state of the next place he will step on, to know if he will change his behavior or not.
+        /// </summary>
         private bool ExecuteTryEatFood(int tryingPosition, int foodPosition)
         {
             if (places[tryingPosition].Food != null && places[tryingPosition].Food.CurrentState == FoodState.Good)
@@ -161,6 +183,9 @@ namespace PigeonsTP2
             return false;
         }
 
+        /// <summary>
+        /// This method is responsible for making the pigeon look around the environment to find food.
+        /// </summary>
         private int VerifyIfThereIsFood()
         {
             int firstPositionLeft = currentPosition - 1;
@@ -182,6 +207,12 @@ namespace PigeonsTP2
             return -1;
         }
 
+        /// <summary>
+        /// This method is responsible for performing the act of eating the pigeon.
+        /// Note that eating the food requires interacting with the environment and with the food. 
+        /// This interaction is not done here, but delegated through the actuator.
+        /// In other words, the Food and Environment classes that listen to the pigeon thread will know when it ate and perform the appropriate action.
+        /// </summary>
         private void EatFood(int newPosition)
         {
             String currentDirection = ImagePath;
@@ -203,6 +234,9 @@ namespace PigeonsTP2
             pigeonAction = PigeonAction.Waiting;
         }
 
+        /// <summary>
+        /// This method is responsible for putting the pigeon to sleep.
+        /// </summary>
         private void SetSleep()
         {
             ImagePath = String.Format("Assets\\pigeon{0}_Zzzz.png", index);
@@ -213,6 +247,9 @@ namespace PigeonsTP2
             actuator.TriggerChangePigeon();
         }
 
+        /// <summary>
+        /// This method is responsible for waking up the pigeon.
+        /// </summary>
         private void SetWakeUp()
         {
             pigeonAction = PigeonAction.Waiting;
@@ -227,6 +264,9 @@ namespace PigeonsTP2
             return timesWaiting >= maxTimeWiting;
         }
 
+        /// <summary>
+        /// This method is responsible for changing the position of the pigeon.
+        /// </summary>
         private void ExecuteWalk(int newPosition)
         {
             places[newPosition].Pigeon = places[currentPosition].Pigeon;
@@ -243,6 +283,10 @@ namespace PigeonsTP2
             pigeonAction = PigeonAction.Waiting;
         }
 
+        /// <summary>
+        /// This method is triggered when the cat appears.
+        /// The pigeon must wake up or disperse to a random position.
+        /// </summary>
         internal void WakeUpOrChangePosition()
         {
             if (pigeonAction == PigeonAction.Sleeping)

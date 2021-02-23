@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class represents the window. It is responsible for controlling the addition of the pigeons and making the cat appear.
+    /// In addition, it is responsible for adding food to the environment when the user clicks on the window.
+    /// In addition, it is responsible for feeding the pigeon, because when the pigeon feeds, it interacts with the environment.
+    /// </summary>
     public class Environment
     {
         private List<Place> places = new List<Place>();

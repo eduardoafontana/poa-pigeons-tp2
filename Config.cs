@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class is a configuration class. 
+    /// It is responsible for storing all fixed values that are used to guide the game's behavior. 
+    /// If in the future we want to open up to the user to configure the game's behavior, just throw the values of that class into a form.
+    /// </summary>
     public class Config
     {
         public static int environmentSize = 19;

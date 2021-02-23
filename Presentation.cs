@@ -12,25 +12,49 @@ using static PigeonsTP2.Environment;
 
 namespace PigeonsTP2
 {
+    /// <summary>
+    /// This class is responsible for initializing the game and rendering the elements on screen.
+    /// </summary>
     public partial class Presentation : Form
     {
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 
         public Presentation()
         {
+            /// <summary>
+            /// This method is responsible for initialize the standard graphic elements of windows forms.
+            /// </summary>
             InitializeComponent();
 
+            /// <summary>
+            /// This method is responsible for initialize the game specific graphic elements.
+            /// </summary>
             CreateEnvironmentPresentation();
 
+            /// <summary>
+            /// Starts the game engine, where basic objects are created.
+            /// </summary>
             Engine.Init();
 
-            Engine.environment.actuator.RaiseChangeEnvironment += new EnvironmentActuator.ChangingEnvironmentActuator(presentation_OnEnvironmentChange);
-            Engine.environment.actuator.RaiseChangeCat += new EnvironmentActuator.ChangingCatActuator(presentation_OnCatChange);
+            /// <summary>
+            /// Association with game threads, to update the graphic elements on the form. 
+            /// The association makes the connection through asynchronous delegates between the threads and the screen object.
+            /// </summary>
+            Engine.environment.actuator.RaiseChangeEnvironment += new EnvironmentActuator.ChangingEnvironmentActuator(Presentation_OnEnvironmentChange);
+            Engine.environment.actuator.RaiseChangeCat += new EnvironmentActuator.ChangingCatActuator(Presentation_OnCatChange);
 
+            /// <summary>
+            /// Start the game.
+            /// </summary>
             Engine.Start();
         }
 
-        private void presentation_OnEnvironmentChange(Place place)
+        /// <summary>
+        /// Method responsible for updating the graphic elements. 
+        /// Note that there is no game logic here, just updating the object according to its state. The game logic is controlled by the objects in the game.
+        /// This method updates pigeons and feeds specifically.
+        /// </summary>
+        private void Presentation_OnEnvironmentChange(Place place)
         {
             try
             {
@@ -50,13 +74,18 @@ namespace PigeonsTP2
                         picture.ImageLocation = place.Food.ImagePath;
                 }));
             }
-            catch (System.InvalidOperationException ex)
+            catch (System.InvalidOperationException)
             {
                 Engine.Stop();
             }
         }
 
-        private void presentation_OnCatChange(bool visible)
+        /// <summary>
+        /// Method responsible for updating the graphic elements. 
+        /// Note that there is no game logic here, just updating the object according to its state. The game logic is controlled by the objects in the game.
+        /// This method updates the cat specifically.
+        /// </summary>
+        private void Presentation_OnCatChange(bool visible)
         {
             try
             {
@@ -65,12 +94,15 @@ namespace PigeonsTP2
                     pictureBox2.Visible = visible;
                 }));
             }
-            catch (System.InvalidOperationException ex)
+            catch (System.InvalidOperationException)
             {
                 Engine.Stop();
             }
         }
 
+        /// <summary>
+        /// Method that detects the click on the form and delegates this action to the game. There is no game logic here.
+        /// </summary>
         public void ClickOnPlace(object sender, MouseEventArgs e)
         {
             Engine.environment.TryAddFood(tableLayoutPanel1.GetColumn((PictureBox)sender));
@@ -80,7 +112,7 @@ namespace PigeonsTP2
         {
             int placeSize = Config.environmentPlaceSizeWidth * Config.environmentSize;
 
-            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            tableLayoutPanel1 = new TableLayoutPanel();
 
             tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel1.ColumnCount = Config.environmentSize;
