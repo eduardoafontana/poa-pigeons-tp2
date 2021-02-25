@@ -48,7 +48,7 @@
     <Compile Include="Randomize.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Characters\Cat.cs" />
-    <Compile Include="Characters\IElement.cs" />
+    <Compile Include="Characters\ICharacter.cs" />
     <Compile Include="Characters\Food.cs" />
     <Compile Include="Characters\FoodState.cs" />
     <Compile Include="Characters\PigeonAction.cs" />

@@ -17,7 +17,7 @@ namespace PigeonsTP2
     /// All behavior is controlled via a thread. 
     /// Interactions between threads are performed by triggering an event from the actuator. Just as the events of other threads are perceived through the sensors.
     /// </summary>
-    public class Pigeon : IElement
+    public class Pigeon : ICharacter
     {
         public string ImagePath { get; private set; }
         public PigeonActuator actuator { get; }
