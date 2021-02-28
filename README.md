@@ -33,4 +33,4 @@ The pigeon only eats the food that is good, if the food rots while the pigeon is
 There is a third character in the scene, which is the cat. The chat is also a thread. The cat is used to disrupt the scene. 
 The cat appears from time to time, the time is random. When the cat appears, the sleeping pigeons wake up and the awakened pigeons randomly change their position.
 
-!(https://github.com/eduardoafontana/poa-pigeons-tp2/blob/main/Resources/window-instruction.png)
+![](https://github.com/eduardoafontana/poa-pigeons-tp2/blob/main/Resources/window-instruction.png)
