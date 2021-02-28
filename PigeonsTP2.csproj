@@ -247,6 +247,7 @@
     <Content Include="Assets\window.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\window-instruction.png" />
     <None Include="README.md" />
     <None Include="Resources\cat3.bmp" />
   </ItemGroup>
